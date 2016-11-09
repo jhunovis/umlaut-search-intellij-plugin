@@ -1,0 +1,41 @@
+= Umlaut Search plugin for IntelliJ IDEA
+
+== The Problem
+This plugin was made for navigating (CTRL+N) code bases which spell classes,
+symbols or file names in German language but do not use the native encoding
+for the German special characters (the umlauts and the sz-ligature). Instead
+they transliterate these characters to an ASCII-representation. I.e. 'ä', 'ö',
+'ü', 'Ä', 'Ö', 'Ü', and 'ß' become 'ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', and 'ss'.
+This is usually a legacy form the times when unicode was not common place.
+
+Switching to the native spelling is difficult in large a code basis, e.g.
+because the transformation back to the native spelling is not unique.
+So old and new spelling will be in used side by side. But this makes finding
+things a hassle because you always have to guess the correct spelling or try
+multiple variations.
+
+This is where this plugin steps in.
+
+== What This Plugin Does
+When the users enters a pattern in the "navigate to" search boxes of IDEA,
+the plugin will also search for the transliterated spelling and produce
+those hits too.
+
+== Limitations
+As said above, the translation between the native form and the ASCII-Form
+is ambiguous, e.g. 'Ä' might be spelled 'AE', or 'Ae' and 'ß' might
+be spelled 'ss' or 'sz'.
+
+When searching by native characters, checking for all possible combinations
+would produce unacceptably may extra searches, e.g. a complete search for
+'Äußerung' would attempt 'Aeusserung", 'AEusserung', 'Aeuszerung', and
+'AEuszerung'. The current implementation will only look for the first
+variant as it is the most common.
+
+When searching by ASCII-characters, the plugin might mistake one of the two
+letter combinations for a transliterated native character which it is not.
+Consider 'Kaesefondue' or 'Oevre'. The latter would not be problem because
+the standard search will yield the correct hit, but for the former the
+plugin would overdo its job and look for 'Käsefondü' which is not spelled
+correctly (it would be 'Käsefondue'). There is nothing the plugin can
+do about this.
