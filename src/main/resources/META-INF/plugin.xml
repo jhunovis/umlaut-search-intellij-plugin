@@ -1,0 +1,41 @@
+<idea-plugin version="2">
+  <id>jhunovis.idea.plugin.umlauts</id>
+  <name>Transliterate Umlauts</name>
+  <version>1.0</version>
+  <vendor email="jhunovis+idea@gmail.com" url="">Jan Hackel</vendor>
+
+  <description><![CDATA[
+    This plugin is for projects with use German for naming their classes, symbols, and files but restrict the character
+    set used for naming to ASCII. E.g. they would have classes like "Aenderungsauftrag" instead of "Änderungsauftrag".
+    Finding something in such an environment becomes a hassle once the use of native characters is allowed, because now
+    you may encounter both spellings and never know, if you just missed a class when search by one spelling or the other.
+    <p>
+    This is when this plugin steps in. It will produce hits for both spellings, i.e. if the users entered "Änd" in the
+    "navigate to class" field (CTRL+N), IDEA will produce both "Aenderungsauftrag" and "Änderungsauftrag".
+    It also works vice versa with the restriction that this way around the translation is not unique, e.g. searching
+    for "Kaesefondue" would not see the actual class "Käsefondue" because the plugin it overdid its job.
+    </p>
+    ]]></description>
+
+  <change-notes><![CDATA[
+    0.1 initial release which only searches for classes (CTRL+N)
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="141.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <depends>com.intellij.modules.lang</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+    <gotoClassContributor implementation="jhunovis.umlauts.ChooseByTransliterationNameContributor"/>
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+</idea-plugin>
