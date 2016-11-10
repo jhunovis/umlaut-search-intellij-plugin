@@ -16,6 +16,8 @@
 package jhunovis.umlauts
 
 import com.intellij.ide.util.gotoByName.DefaultClassNavigationContributor
+import com.intellij.ide.util.gotoByName.DefaultFileNavigationContributor
+import com.intellij.ide.util.gotoByName.DefaultSymbolNavigationContributor
 import com.intellij.navigation.ChooseByNameContributorEx
 import com.intellij.navigation.NavigationItem
 import com.intellij.util.Processor
@@ -27,17 +29,16 @@ import com.intellij.util.indexing.FindSymbolParameters
  *
  * @author <a href="mailto:jhunovis+idea@gmail.com">Jan Hackel</a>
  */
-class ChooseByTransliterationNameContributor
-internal constructor(val delegate: ChooseByNameContributorEx) : ChooseByNameContributorEx by delegate {
+open class TransliteratingNavigationContributor
+constructor(val delegate: ChooseByNameContributorEx) : ChooseByNameContributorEx by delegate {
 
     private val germanTransliteration = GermanTransliteration()
 
-    constructor() : this(DefaultClassNavigationContributor())
-
-    override fun processElementsWithName(name: String, processor: Processor<NavigationItem>, parameters: FindSymbolParameters) {
+    final override fun processElementsWithName(name: String, processor: Processor<NavigationItem>, parameters: FindSymbolParameters) {
         val completePattern = parameters.completePattern
         val transliteratedPattern = transliterate(completePattern)
         if (transliteratedPattern != completePattern) {
+            println("Looking for $transliteratedPattern")
             val transliteratedName = transliterate(name)
             delegate.processElementsWithName(
                     transliteratedName, processor, newParametersWith(parameters, transliteratedPattern, transliteratedName)
@@ -51,3 +52,7 @@ internal constructor(val delegate: ChooseByNameContributorEx) : ChooseByNameCont
     private fun transliterate(symbol: String) =
         germanTransliteration.transliterate(symbol)
 }
+
+class TransliteratingClassNavigationContributor : TransliteratingNavigationContributor(DefaultClassNavigationContributor())
+class TransliteratingFileNavigationContributor : TransliteratingNavigationContributor(DefaultFileNavigationContributor())
+class TransliteratingSymbolNavigationContributor : TransliteratingNavigationContributor(DefaultSymbolNavigationContributor())
