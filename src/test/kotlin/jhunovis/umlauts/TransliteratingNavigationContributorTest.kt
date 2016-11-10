@@ -29,16 +29,13 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.BDDMockito.then
 
-/**
- * @author [Jan Hackel](mailto:jhunovis+idea@gmail.com)
- */
-class ChooseByTransliterationNameContributorTest {
+class TransliteratingNavigationContributorTest {
 
     private val nameProcessor: Processor<NavigationItem> = mock()
     private val findSymbolParametersCapture: ArgumentCaptor<FindSymbolParameters> = ArgumentCaptor.forClass(FindSymbolParameters::class.java)
     private val ideaDefaultNameContributor: ChooseByNameContributorEx = mock()
 
-    private val chooseByTransliterationNameContributor = ChooseByTransliterationNameContributor(ideaDefaultNameContributor)
+    private val chooseByTransliterationNameContributor = TransliteratingNavigationContributor(ideaDefaultNameContributor)
 
     @Test
     fun whenSearchingForPatternWithNativeCharactersOrTheirTransliterations_ShouldForwardMappedPatternToRealImplementation() {

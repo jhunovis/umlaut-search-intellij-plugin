@@ -31,7 +31,9 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-    <gotoClassContributor implementation="jhunovis.umlauts.ChooseByTransliterationNameContributor"/>
+    <gotoClassContributor implementation="jhunovis.umlauts.TransliteratingClassNavigationContributor"/>
+    <gotoFileContributor implementation="jhunovis.umlauts.TransliteratingFileNavigationContributor"/>
+    <gotoSymbolContributor implementation="jhunovis.umlauts.TransliteratingSymbolNavigationContributor"/>
   </extensions>
 
   <actions>
