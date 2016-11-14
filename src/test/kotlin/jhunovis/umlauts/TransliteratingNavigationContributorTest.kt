@@ -32,13 +32,14 @@ import org.mockito.BDDMockito.then
 class TransliteratingNavigationContributorTest {
 
     private val nameProcessor: Processor<NavigationItem> = mock()
-    private val findSymbolParametersCapture: ArgumentCaptor<FindSymbolParameters> = ArgumentCaptor.forClass(FindSymbolParameters::class.java)
     private val ideaDefaultNameContributor: ChooseByNameContributorEx = mock()
 
     private val chooseByTransliterationNameContributor = TransliteratingNavigationContributor(ideaDefaultNameContributor)
 
     @Test
     fun whenSearchingForPatternWithNativeCharactersOrTheirTransliterations_ShouldForwardMappedPatternToRealImplementation() {
+        val findSymbolParametersCapture: ArgumentCaptor<FindSymbolParameters> = captor()
+
         chooseByTransliterationNameContributor.processElementsWithName(
                 "Hällo", nameProcessor, findSymbolParameters("Hällo", "Hä")
         )
@@ -60,6 +61,8 @@ class TransliteratingNavigationContributorTest {
 
     private fun findSymbolParameters(nativeName: String, nativePattern: String) =
             FindSymbolParameters(nativePattern, nativeName, GlobalSearchScope.EMPTY_SCOPE, null)
+
+    inline fun <reified T : Any> captor(): ArgumentCaptor<T> = ArgumentCaptor.forClass(T::class.java)
 }
 
 

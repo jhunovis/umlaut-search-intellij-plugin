@@ -20,8 +20,10 @@ import com.intellij.ide.util.gotoByName.DefaultFileNavigationContributor
 import com.intellij.ide.util.gotoByName.DefaultSymbolNavigationContributor
 import com.intellij.navigation.ChooseByNameContributorEx
 import com.intellij.navigation.NavigationItem
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.Processor
 import com.intellij.util.indexing.FindSymbolParameters
+import com.intellij.util.indexing.IdFilter
 
 /**
  * Search for variations of the class name patterned entered by the IDEA user by mapping German native characters to
@@ -34,11 +36,21 @@ constructor(val delegate: ChooseByNameContributorEx) : ChooseByNameContributorEx
 
     private val germanTransliteration = GermanTransliteration()
 
+    final override fun processNames(processor: Processor<String>, scope: GlobalSearchScope, filter: IdFilter?) {
+        delegate.processNames({ name ->
+            val transliterated = transliterate(name)
+            if (name != transliterated) {
+                processor.process(name)
+                processor.process(transliterated)
+            }
+            true
+        }, scope, filter)
+    }
+
     final override fun processElementsWithName(name: String, processor: Processor<NavigationItem>, parameters: FindSymbolParameters) {
         val completePattern = parameters.completePattern
         val transliteratedPattern = transliterate(completePattern)
         if (transliteratedPattern != completePattern) {
-            println("Looking for $transliteratedPattern")
             val transliteratedName = transliterate(name)
             delegate.processElementsWithName(
                     transliteratedName, processor, newParametersWith(parameters, transliteratedPattern, transliteratedName)
@@ -50,7 +62,7 @@ constructor(val delegate: ChooseByNameContributorEx) : ChooseByNameContributorEx
             FindSymbolParameters(pattern, name, parameters.searchScope, parameters.idFilter)
 
     private fun transliterate(symbol: String) =
-        germanTransliteration.transliterate(symbol)
+            germanTransliteration.transliterate(symbol)
 }
 
 class TransliteratingClassNavigationContributor : TransliteratingNavigationContributor(DefaultClassNavigationContributor())
