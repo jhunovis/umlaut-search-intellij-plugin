@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>jhunovis.idea.plugin.umlauts</id>
   <name>Transliterate Umlauts</name>
-  <version>1.0</version>
+  <version>0.9</version>
   <vendor email="jhunovis+idea@gmail.com" url="">Jan Hackel</vendor>
 
   <description><![CDATA[
@@ -18,7 +18,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-    0.1 initial release which only searches for classes (CTRL+N)
+    0.9 initial release
     ]]>
   </change-notes>
 
