@@ -65,10 +65,6 @@ class GermanTransliterationTest {
         assertIsTranslatedFromInto(expectedTransliteration, word)
     }
 
-    fun replaceAllOccurrences(word: String, expectedTransliteration: String) {
-        assertIsTranslatedFromInto("Käsefondueüberfluss", "Kaesefondueueberfluss")
-    }
-
     @Test
     fun givenTransliteratedWritings_IncorrectMappingsMayResult() {
         assertIsTranslatedFromInto("Kaesefondueueberfluss", "Käsefondüüberfluß")

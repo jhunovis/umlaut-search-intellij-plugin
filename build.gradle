@@ -25,7 +25,7 @@ repositories {
 
 
 intellij {
-    version '2016.2.5'
+    version '2016.3'
     updateSinceUntilBuild false
     //plugins 'coverage'
     pluginName 'umlaut-search'
