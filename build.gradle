@@ -17,7 +17,7 @@ apply plugin: 'idea'
 apply plugin: 'kotlin'
 
 group 'jhunovis'
-version '0.9-SNAPSHOT'
+version '0.9.1'
 
 repositories {
     mavenCentral()
@@ -26,7 +26,8 @@ repositories {
 
 intellij {
     version '2016.2.5'
-    plugins 'coverage'
+    updateSinceUntilBuild false
+    //plugins 'coverage'
     pluginName 'umlaut-search'
 }
 
